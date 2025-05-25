@@ -42,4 +42,4 @@ ssh -i ~/Downloads/booksapi.pem "$REMOTE_HOST" bash -s <<EOF
   echo "✅  UI deployed!"
 EOF
 
-echo "7.  Done.  Hit https://booksapi.zenflixapp.online/ in a minute or two."
+echo "7.  Done.  Hit https://books.zenflixapp.online/ in a minute or two."
