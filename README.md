@@ -1,100 +1,108 @@
 # Books UI
 
-A simple React-based user interface for managing a book collection. This app allows you to add, update, and delete book records using a backend API.
+A React + Vite single‑page application for managing your book collection.  
+The app talks to the Books API and lets you create, edit and delete titles — all behind a tidy HTTPS setup.
+
+**Live demo → <https://books.zenflixapp.online>**
+
+---
 
 ## Features
 
-- **Add a New Book:** Enter title, author, ISBN, and published year.
-- **Edit an Existing Book:** Update selected book details.
-- **Delete a Book:** Remove a book from the list.
-- **Responsive Layout:** Built with Tailwind CSS and DaisyUI for a modern UI.
-- **Table View:** Displays book records in a well-spaced table.
+- **Add / Edit / Delete** books (title, author, ISBN, year)
+- **Table view** with responsive layout
+- **Instant form validation** (client‑side)
+- **Custom favicon & title** (`Books App`)
+- **HTTPS‑only** deployment with free Let’s Encrypt certs
 
-## Technologies Used
+---
 
-- [React](https://reactjs.org/)
-- [Vite](https://vitejs.dev/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [DaisyUI](https://daisyui.com/)
-- [Axios](https://axios-http.com/)
+## Stack
 
-## Getting Started
+| Layer | Tech | Notes |
+|-------|------|-------|
+| Front‑end | [React 18](https://react.dev) + [Vite](https://vitejs.dev) | ultra‑fast HMR |
+| Styling  | [Tailwind CSS](https://tailwindcss.com) + [DaisyUI](https://daisyui.com) | utility + component library |
+| HTTP     | [Axios](https://axios-http.com) | REST client |
+| Dev ops  | Docker multi‑stage → Nginx → EC2 | script `deploy‑ui.sh` |
+| TLS      | Nginx + Certbot (Let’s Encrypt) | auto‑renew |
+
+---
+
+## Getting Started (Local dev)
 
 ### Prerequisites
-
-- Node.js (v14 or later)
-- npm
-
-### Installation
-
-1. Clone the repository:
-
-   ```bash
-   git clone https://github.com/yourusername/books-ui.git
-   cd books-ui
-   ```
-
-2. Install dependencies:
-
-   ```bash
-   npm install
-   ```
-
-3. (Optional) If you need to set up Tailwind CSS configuration:
-
-   ```bash
-   npx tailwindcss init -p
-   ```
-
-### Running the App
-
-You can start the development server by running:
+* Node 18 or later
+* npm
 
 ```bash
-npm run dev
+git clone https://github.com/<your‑handle>/books-ui.git
+cd books-ui
+npm install
+npm run dev      # visit http://localhost:5173
 ```
 
-Then, open your browser to [http://localhost:5173](http://localhost:5173) (or as indicated in the terminal).
+---
 
-### Build for Production
-
-To build the app for production:
+## Running with Docker (optional)
 
 ```bash
-npm run build
+docker build -t books-ui .
+docker run -p 5173:80 books-ui
 ```
 
-Preview the production build by running:
+---
+
+## Production Deploy
+
+The repo includes **deploy‑ui.sh** — a one‑liner that:
+
+1. Builds & pushes `kathirganesan/books-ui:<git‑sha>`  
+2. SSHes to EC2 (`13.201.250.57`) and swaps the container on port **8081**  
+3. Host‑level Nginx proxies → `https://books.zenflixapp.online`
 
 ```bash
-npm run preview
+./deploy-ui.sh                 # requires DOCKERHUB_USER & SSH key
 ```
 
-## Folder Structure
+_Back‑end deploy lives in `deploy-api.sh` and exposes the API at  
+<https://booksapi.zenflixapp.online/api/>._
+
+---
+
+## Folder Structure
 
 ```
 books-ui/
-├── node_modules/
-├── public/
-│   └── index.html
-├── src/
-│   ├── components/
-│   │   ├── BookForm.jsx
-│   │   └── BookList.jsx
-│   ├── index.css
-│   └── App.jsx
-├── package.json
-├── README.md
-└── vite.config.js
+├─ public/
+│  ├─ favicon.png
+│  └─ index.html
+├─ src/
+│  ├─ components/
+│  │  ├─ BookForm.jsx
+│  │  └─ BookList.jsx
+│  ├─ App.jsx
+│  └─ index.css
+├─ deploy-ui.sh
+└─ Dockerfile
 ```
+
+---
 
 ## API
 
-This app communicates with a backend API. Make sure your backend server is running and accessible at `/api/books`. Update your proxy configuration in `vite.config.js` if needed.
+During development the Vite proxy redirects `/api/**` to  
+`http://localhost:8080`.  
+In production the host Nginx forwards the same path to the Spring Boot
+container on port 8080.
+
+---
 
 ## Contributing
 
-Contributions are welcome! Feel free to open issues or create pull requests.
+Pull requests are welcome — please open an issue first to discuss major changes.
+
+---
 
 ## License
 
