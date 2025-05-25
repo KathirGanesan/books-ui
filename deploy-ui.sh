@@ -24,7 +24,7 @@ echo "2.  Pushing to Docker Hub …"
 docker push "$DOCKERHUB_USER/$APP_NAME:$TAG"
 
 echo "3.  SSH → $REMOTE_HOST and deploy …"
-ssh "$REMOTE_HOST" bash -s <<EOF
+ssh -i ~/Downloads/booksapi.pem "$REMOTE_HOST" bash -s <<EOF
   set -e
   echo "4.  Pull new image"
   docker pull "$DOCKERHUB_USER/$APP_NAME:$TAG"
@@ -35,8 +35,9 @@ ssh "$REMOTE_HOST" bash -s <<EOF
 
   echo "6.  Run fresh container"
   # --network host lets Nginx inside the container reach the API at http://127.0.0.1:8080
-  docker run -d --name $APP_NAME --restart unless-stopped --network host \
-    "$DOCKERHUB_USER/$APP_NAME:$TAG"
+  docker run -d --name $APP_NAME --restart unless-stopped \
+   -p 8081:80 \
+   "$DOCKERHUB_USER/$APP_NAME:$TAG"
 
   echo "✅  UI deployed!"
 EOF
