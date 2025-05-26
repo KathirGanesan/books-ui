@@ -29,9 +29,6 @@ a:hover {
 
 body {
   margin: 0;
-  /* Add safe-area padding for devices like iPhone 14 Plus */
-  padding-left: env(safe-area-inset-left);
-  padding-right: env(safe-area-inset-right);
   display: flex;
   justify-content: center;
   align-items: center;
