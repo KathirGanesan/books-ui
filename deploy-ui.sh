@@ -24,7 +24,7 @@ echo "2.  Pushing to Docker Hub …"
 docker push "$DOCKERHUB_USER/$APP_NAME:$TAG"
 
 echo "3.  SSH → $REMOTE_HOST and deploy …"
-ssh -i ~/Downloads/booksapi.pem "$REMOTE_HOST" bash -s <<EOF
+ssh -i ~/.ssh/booksapi.pem "$REMOTE_HOST" bash -s <<EOF
   set -e
   echo "4.  Pull new image"
   docker pull "$DOCKERHUB_USER/$APP_NAME:$TAG"

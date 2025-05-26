@@ -111,7 +111,7 @@ export default function BookForm({ editingBook, onSubmitSuccess }) {
             className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-400 transition"
           />
         </div>
-        <div className="md:col-span-2 flex justify-end mt-2">
+        <div className="md:col-span-2 flex justify-center mt-2">
           <button
             type="submit"
             className="px-8 py-2 bg-indigo-600 text-white font-semibold rounded-lg shadow hover:bg-indigo-700 transition"
